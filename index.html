@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TriviaGame</title>
+  <!-- Added link to the jQuery Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Added a link to Bootstrap-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+
+<div class="playArea">
+  <div class="clearfix">
+      <div id=guessRight class="col-md-4" ><img src="assets/images/win.jpg" alt="Win Count" style="width:40px">
+        <span id="winCount"></span>
+      </div>
+      <div id=time class="col-md-4" ></div>
+      <div id=score class="col-md-4">Score: 0</div>
+  </div>
+
+
+  <div id=question class="col-md-12 clearfix">Welcome to Trivia game. Press start to begin</div>
+  <div id=choices> </div>
+  <div id=fact> </div>
+  <button class="btn btn-default" id="start">start</button>
+
+</div>
+
+
+
+<script type="text/javascript">
+
+  var timer = 20;
+  var interval;
+  var timerRunning = false;
+  var playtime = true;
+  var score = 0
+  var q = -1
+
+  var questionBank = [
+    {
+      text : "Which country has the biggest population",
+      choices : ["India", "China", "Indonesia", "United States"],
+      correct : "China",
+      fact : "China's population is 1.379 billion (as of 7/2017)"
+    },
+    {
+      text : "Which country has the highest life expectancy at birth",
+      choices : ["Monaco", "Iceland", "Switzerland", "Italy"],
+      correct : "Monaco",
+      fact : "Monaco's average life expectancy at birth is 89.5 years. <br> Life expectancy at birth compares the average number of years to be lived by a group of people born in the same year, if mortality at each age remains constant in the future."
+    },
+    {
+      text : "How many airports there are in USA",
+      choices : ["13,513", "43,983", "7,602", "62,165"],
+      correct : "13,513",
+      fact : "There are 43,983 airports in the world, close to 1/3 of all airports are in US. US has as many airports as next 11 countries combined"
+    }
+
+  ];
+
+
+// Count seconds till next question
+function runTimer() {
+  timer--;
+  $("#time").html("Time: " + timer);
+  if (timer<=0 && playtime) {
+    showAnswer ("Sorry,")
+
+  } else if (timer<=0 && !playtime){
+    timer=20;
+    playtime=true;
+    generateQ ();
+  }
+};
+
+// show correct answer
+function showAnswer (arr) {
+  timer=10;
+  $(".choice").hide();
+  $("#question").html(arr);
+  $("#question").append("Correct answer is: "+ questionBank[q].correct)
+  $("#fact").html(questionBank[q].fact);
+  playtime=false;
+}
+
+// on click of start start the clock
+function start () {
+  if (!timerRunning) {
+    $("#start").hide();
+    timerRunning = true;
+    interval = setInterval(runTimer,1000 * 1);
+    generateQ();
+  }
+}
+
+// Populate questions
+function generateQ () {
+  q++
+  $("#fact").empty();
+  $("#choices").show();
+  $("#choices").empty();
+  $("#question").html(questionBank[q].text);
+
+  for (var i = 0; i < 4; i++) {
+    var bt = $("<button>");
+    bt.addClass("btn btn-default choice");
+    bt.val(questionBank[q].choices[i]);
+    bt.text(questionBank[q].choices[i]);
+    $("#choices").append(bt);
+  };
+
+};
+
+
+
+// Check answer
+  $("body").on('click','.choice',function(){
+    if(this.value==questionBank[q].correct) {
+      score = score + timer;
+      $("#score").html("Score: " + score);
+      showAnswer("Congrats, ");
+    } else {
+      showAnswer ("Sorry, ")
+    }
+  });
+
+
+
+  $("#choices").hide();
+  $("#start").click(start);
+
+</script>
+
+</body>
+</html>

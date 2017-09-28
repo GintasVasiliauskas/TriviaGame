@@ -1,0 +1,48 @@
+body{
+  color:white;
+  background-image: url("../images/body.png");
+  margin: auto;
+  padding-top:  100px;
+}
+
+.playArea{
+  padding-top:  25px;
+  margin:auto;
+  background-image: url("../images/game.png");
+  width:25%;
+  height: 500px;
+  text-align: center;
+
+}
+
+button {
+  margin: 15px 0;
+  width:90%;
+  height:40px;
+}
+
+
+#question{
+  margin: 25px 0;
+  font-size: 1.2em;
+}
+
+#guessRight {
+  float: left;
+  text-align: left;
+}
+
+#score {
+  float:right;
+}
+
+#time {
+  width: 33%;
+
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
